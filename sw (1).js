@@ -1,6 +1,6 @@
-self.options = {
-    "domain": "5gvci.com",
-    "zoneId": 10829833
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
 }
-self.lary = ""
-importScripts('https://5gvci.com/act/files/service-worker.min.js?r=sw')
+</script>
+</body>
