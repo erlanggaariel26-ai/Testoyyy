@@ -6,105 +6,107 @@
 <title>VidPlay — Tonton Video Gratis HD</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* CSS tetap sama sesuai desain asli Anda */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#0a0a0f;--surface:#111118;--surface2:#1a1a24;
   --border:#222232;--muted:#64748b;--text:#f0f0f0;
-  --accent:#3b82f6;--accent2:#60a5fa;--red:#ef4444;
-  --green:#16a34a;
+  --accent:#3b82f6;
 }
-html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif}
-nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;}
-.nav-logo{font-weight:800;font-size:18px;letter-spacing:-.3px}.nav-logo span{color:var(--accent)}
-.nav-spacer{flex:1}.nav-btn{background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;}
-.main{max-width:1200px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 300px;gap:16px;}
-.player-wrap{position:relative;background:#000;border-radius:14px;overflow:hidden;aspect-ratio:16/9;width:100%;}
-.player-wrap video{width:100%;height:100%;object-fit:contain;display:block}
+html,body{width:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif}
 #popupOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:999999;}
 #popupOverlay.hidden{display:none}
-#popupBox{background:#111118;border:1px solid #222232;border-radius:14px;width:min(360px,92vw);overflow:hidden;position:relative;}
-#popupCloseFab{position:absolute;top:-20px;right:-20px;width:44px;height:44px;background:#0f172a;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#fff;z-index:1000002;}
-.popup-ad-wrap{width:100%;display:flex;flex-direction:column;align-items:center;background:#000;padding:10px 10px 6px;}
+#popupBox{background:#111118;border:1px solid #222232;border-radius:14px;width:min(360px,92vw);position:relative;}
+#popupCloseFab{
+  position:absolute;top:-20px;right:-20px;width:44px;height:44px;
+  background:#0f172a;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;cursor:default;font-size:15px;color:#475569;z-index:1000002;
+}
+#popupCloseFab.ready{cursor:pointer;color:#fff;}
+.popup-ad-wrap{width:100%;padding:10px;text-align:center;background:#000;}
 .popup-footer{background:#0f172a;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #222232;}
-.popup-visit-btn{background:#3b82f6;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;}
-/* ... (Gunakan sisa CSS dari file asli Anda) ... */
+.popup-visit-btn{background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;font-size:12px;text-decoration:none;font-weight:700;}
 </style>
 </head>
 <body>
 
 <div id="popupOverlay">
   <div id="popupBox">
-    <div id="popupCloseFab" onclick="closePopup(event)" title="Tutup Iklan">
-      <span>✕</span>
+    <div id="popupCloseFab" onclick="handleCloseClick(event)">
+      <span id="popupFabInner">✕</span>
       <svg viewBox="0 0 44 44" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
-        <circle cx="22" cy="22" r="19" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
+        <circle cx="22" cy="22" r="19" fill="none" stroke="#1e293b" stroke-width="2.5"/>
+        <circle id="popupArc" cx="22" cy="22" r="19" fill="none" stroke="#3b82f6" stroke-width="2.5"
+          stroke-dasharray="0 120" stroke-linecap="round" transform="rotate(-90 22 22)"/>
       </svg>
     </div>
 
     <div class="popup-ad-wrap">
-      <div style="color:#64748b; font-size:9px; margin-bottom:5px;">IKLAN</div>
-      <div id="ad-container">
-         <script type="text/javascript">
-            atOptions = { 'key' : '5587dc9d7bd7fe1a092dd063f078236e', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
-         </script>
-         <script type="text/javascript" src="//www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
-      </div>
+      <div style="font-size:10px; color:#64748b; margin-bottom:5px;">IKLAN</div>
+      <script type="text/javascript">
+        atOptions = { 'key' : '5587dc9d7bd7fe1a092dd063f078236e', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
     </div>
 
     <div class="popup-footer">
-      <span id="popupInfo" style="font-size:12px;color:#64748b">Klik ✕ untuk menutup</span>
+      <div style="flex:1;text-align:center">
+        <span id="popupInfo" style="font-size:12px;color:#64748b">Tunggu <b id="popupNum" style="color:#f0f0f0">5</b>s</span>
+      </div>
       <a href="https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba" target="_blank" class="popup-visit-btn">Kunjungi →</a>
     </div>
   </div>
 </div>
 
-<nav>
-  <div class="nav-logo">Vid<span>Play</span></div>
-  <div class="nav-spacer"></div>
-  <button class="nav-btn">▲ Upload</button>
-</nav>
-
-<div class="main">
-  <div class="video-section">
-    <div class="player-wrap">
-      <video id="mainVideo" controls>
-        <source src="https://cdn2.videy.co/GQNleLmh1.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div style="margin-top:20px;">
-        <h1 style="font-size:18px;">🎬 Video Pilihan — Tonton Gratis HD</h1>
-    </div>
-  </div>
-</div>
-
 <script>
-// FUNGSI TUTUP IKLAN YANG SUDAH DIPERBAIKI
-function closePopup(e) {
-  if (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-  // Langsung sembunyikan overlay tanpa paksa klik iklan
-  const overlay = document.getElementById('popupOverlay');
-  if (overlay) {
-    overlay.classList.add('hidden');
-  }
-}
+const SMARTLINK = 'https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba';
+let clickCount = 0; // Menghitung jumlah klik
+let isReady = false; // Status apakah countdown selesai
 
-// Logika visual countdown tetap ada namun tidak mengunci tombol
+// 1. Logika Countdown
 (function(){
   let n = 5;
+  const fab = document.getElementById('popupCloseFab');
+  const num = document.getElementById('popupNum');
   const info = document.getElementById('popupInfo');
-  const timer = setInterval(function(){
+  const arc = document.getElementById('popupArc');
+  const circ = 2 * Math.PI * 19;
+
+  const timer = setInterval(() => {
     n--;
+    let pct = (5 - n) / 5;
+    if(arc) arc.setAttribute('stroke-dasharray', (pct * circ).toFixed(1) + ' ' + circ);
+    
     if(n <= 0){
       clearInterval(timer);
-      if(info) info.textContent = 'Siap ditutup';
+      isReady = true;
+      if(num) num.textContent = '✓';
+      if(info) info.innerHTML = '<span style="color:#60a5fa">Klik ✕ untuk tutup</span>';
+      fab.classList.add('ready');
+    } else {
+      if(num) num.textContent = n;
     }
   }, 1000);
 })();
-</script>
 
+// 2. Logika Klik Ganda (Redirect dulu, baru Tutup)
+function handleCloseClick(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  
+  // Jika countdown belum selesai, jangan lakukan apa-apa
+  if (!isReady) return;
+
+  clickCount++;
+
+  if (clickCount === 1) {
+    // Klik Pertama: Buka Iklan
+    window.open(SMARTLINK, '_blank');
+    // Beri info ke user
+    document.getElementById('popupInfo').innerHTML = '<span style="color:#ef4444">Sekali lagi untuk tutup</span>';
+  } else if (clickCount >= 2) {
+    // Klik Kedua: Tutup Popup
+    document.getElementById('popupOverlay').classList.add('hidden');
+  }
+}
+</script>
 </body>
 </html>
