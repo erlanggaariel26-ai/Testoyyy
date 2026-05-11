@@ -16,14 +16,11 @@
   gtag('js',new Date());gtag('config','G-NNRLEN518P');
 </script>
 
-<!-- ====== POPUNDER ADSTERRA ====== -->
+<!-- POPUNDER ADSTERRA -->
 <script src="https://pl29122947.profitablecpmratenetwork.com/21/8f/25/218f25eb8a766774d4f8749158d94b81.js"></script>
 
-<!-- ====== SMARTLINK ADSTERRA ====== -->
+<!-- SMARTLINK ADSTERRA -->
 <script type='text/javascript' src='//www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba' async></script>
-
-<!-- ====== MONETAG — Paste script Monetag kamu di sini ====== -->
-<!-- <script src="PASTE_SCRIPT_MONETAG_DISINI.js"></script> -->
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -111,7 +108,7 @@ nav{
 .play-circle svg{width:28px;height:28px;fill:#fff;margin-left:4px}
 .play-text{color:#fff;font-size:14px;font-weight:600}
 
-/* THUMBNAIL OVERLAY saat ganti video */
+/* THUMBNAIL OVERLAY */
 .thumb-overlay{
   position:absolute;inset:0;z-index:4;
   background:var(--surface2);
@@ -176,6 +173,14 @@ nav{
 /* BANNER BAWAH VIDEO */
 .ad-below{
   margin-top:10px;display:flex;
+  justify-content:center;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:10px;overflow:hidden;
+}
+
+/* AD MID — iklan di tengah antara info dan related */
+.ad-mid{
+  margin:10px 0;display:flex;
   justify-content:center;
   background:var(--surface);border:1px solid var(--border);
   border-radius:10px;padding:10px;overflow:hidden;
@@ -300,9 +305,219 @@ footer{
   white-space:nowrap;
 }
 .toast.show{opacity:1}
+
+/* ===== MID-ROLL OVERLAY (di dalam player) ===== */
+@keyframes mrFadeIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+
+#midrollOverlay{
+  position:absolute;inset:0;z-index:20;
+  background:rgba(0,0,0,0.92);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:0;
+}
+#midrollOverlay.hidden{display:none}
+
+.mr-label{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:6px 12px;background:rgba(0,0,0,0.6);
+  font-size:11px;color:#94a3b8;letter-spacing:.5px;
+}
+.mr-label b{color:#f0f0f0}
+
+.mr-ad-area{
+  flex:1;width:100%;
+  display:flex;align-items:center;justify-content:center;
+  background:#000;overflow:hidden;
+  min-height:120px;
+}
+
+.mr-ad-area{position:relative}
+.mr-ad-shield{
+  position:absolute;inset:0;z-index:10;cursor:default;
+}
+.mr-ad-shield.off{display:none}
+
+.mr-bottom{
+  width:100%;display:flex;align-items:center;
+  justify-content:space-between;gap:10px;
+  padding:10px 14px;
+  background:#0f172a;
+  border-top:2px solid #1e293b;
+  position:relative;z-index:30;
+}
+.mr-skip-btn{
+  background:#1e293b;color:#475569;
+  border:1px solid #334155;
+  padding:9px 20px;border-radius:8px;
+  font-size:13px;font-weight:700;
+  cursor:default;
+  white-space:nowrap;font-family:'Inter',sans-serif;
+  transition:.2s;user-select:none;
+  position:relative;z-index:31;
+}
+.mr-skip-btn.ready{
+  background:#3b82f6;color:#fff;
+  border-color:#3b82f6;cursor:pointer;
+  box-shadow:0 0 0 3px rgba(59,130,246,.3);
+}
+.mr-skip-btn.ready:hover{background:#2563eb}
+.mr-countdown{
+  font-size:12px;color:#64748b;text-align:center;flex:1;
+  pointer-events:none;
+}
+.mr-countdown b{color:#f0f0f0;font-size:22px;display:block;line-height:1.1}
+.mr-visit{
+  background:#ef4444;color:#fff;border:none;
+  padding:9px 16px;border-radius:8px;
+  font-size:12px;font-weight:700;cursor:pointer;
+  white-space:nowrap;font-family:'Inter',sans-serif;transition:.15s;
+  text-decoration:none;display:inline-block;
+  position:relative;z-index:31;
+}
+.mr-visit:hover{background:#dc2626}
+
+/* Tombol tutup FAB — pojok kanan atas di ATAS box, tidak menyentuh iframe */
+#popupBox{
+  position:relative;
+}
+#popupCloseFab{
+  position:absolute;
+  top:-20px;right:-20px;
+  width:44px;height:44px;
+  background:#0f172a;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:default;
+  font-size:15px;color:#475569;
+  user-select:none;
+  transition:.2s;
+  z-index:1000002;
+}
+#popupCloseFab.ready{
+  cursor:pointer;color:#fff;
+}
+#popupCloseFab.ready:hover{ background:#1e3a5f; }
+
+/* ===== POPUP INTERSTITIAL ===== */
+@keyframes popFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes popSlideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+#popupOverlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;align-items:center;justify-content:center;
+  z-index:999999;
+  animation:popFadeIn .3s ease;
+}
+#popupOverlay.hidden{display:none}
+
+#popupBox{
+  background:#111118;
+  border:1px solid #222232;
+  border-radius:14px;
+  width:min(360px,92vw);
+  overflow:hidden;
+  animation:popSlideUp .35s ease;
+  box-shadow:0 20px 60px rgba(0,0,0,.8);
+}
+
+.popup-ad-wrap{
+  width:100%;
+  display:flex;flex-direction:column;
+  align-items:center;
+  background:#000;
+  padding:10px 10px 6px;
+  position:relative;
+}
+.popup-ad-label{
+  font-size:9px;color:#64748b;
+  letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:6px;align-self:flex-start;
+}
+
+.popup-footer{
+  background:#0f172a;
+  padding:10px 14px;
+  display:flex;align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-top:1px solid #222232;
+}
+.popup-close-btn{
+  background:#1e293b;
+  color:#94a3b8;
+  border:1px solid #334155;
+  padding:8px 16px;
+  border-radius:8px;
+  font-size:12px;font-weight:600;
+  cursor:default;
+  opacity:.5;
+  white-space:nowrap;
+  transition:.2s;
+  font-family:'Inter',sans-serif;
+}
+.popup-close-btn.ready{
+  background:#ef4444;color:#fff;
+  border-color:#ef4444;
+  cursor:pointer;opacity:1;
+}
+.popup-close-btn.ready:hover{background:#dc2626}
+
+.popup-countdown{
+  font-size:12px;color:#64748b;
+  text-align:center;flex:1;line-height:1.4;
+}
+.popup-countdown b{color:#f0f0f0;font-size:18px;display:block}
+
+.popup-visit-btn{
+  background:#3b82f6;color:#fff;
+  border:none;padding:8px 14px;
+  border-radius:8px;font-size:12px;font-weight:700;
+  cursor:pointer;white-space:nowrap;
+  font-family:'Inter',sans-serif;
+  transition:.15s;
+}
+.popup-visit-btn:hover{background:#2563eb}
 </style>
 </head>
 <body>
+
+<!-- ===== POPUP INTERSTITIAL ===== -->
+<div id="popupOverlay">
+  <div id="popupBox">
+
+    <!-- Tombol tutup FAB — di LUAR area iklan, pojok kanan atas box -->
+    <div id="popupCloseFab" onclick="closePopup(event)" title="Tutup Iklan">
+      <span id="popupFabInner">✕</span>
+      <svg viewBox="0 0 44 44" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+        <circle cx="22" cy="22" r="19" fill="none" stroke="#1e293b" stroke-width="2.5"/>
+        <circle id="popupArc" cx="22" cy="22" r="19" fill="none" stroke="#3b82f6" stroke-width="2.5"
+          stroke-dasharray="0 120" stroke-linecap="round"
+          transform="rotate(-90 22 22)"/>
+      </svg>
+    </div>
+
+    <!-- Adsterra 300x250 -->
+    <div class="popup-ad-wrap">
+      <div class="popup-ad-label">Iklan</div>
+      <script>
+        atOptions={'key':'5587dc9d7bd7fe1a092dd063f078236e','format':'iframe','height':250,'width':300,'params':{}};
+      </script>
+      <script src="https://www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
+    </div>
+
+    <!-- Info + kunjungi -->
+    <div class="popup-footer">
+      <div style="flex:1;text-align:center">
+        <span id="popupInfo" style="font-size:12px;color:#64748b">Tutup dalam <b id="popupNum" style="color:#f0f0f0;font-size:16px">5</b> detik</span>
+      </div>
+      <a href="https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba"
+         target="_blank" class="popup-visit-btn">Kunjungi →</a>
+    </div>
+
+  </div>
+</div>
 
 <!-- NAVBAR -->
 <nav>
@@ -336,7 +551,24 @@ footer{
         <source id="videoSrc" src="https://cdn2.videy.co/GQNleLmh1.mp4" type="video/mp4"/>
       </video>
 
-      <!-- Thumbnail saat ganti video -->
+      <!-- MID-ROLL OVERLAY -->
+      <div id="midrollOverlay" class="hidden">
+        <div class="mr-label">
+          <span>📺 Iklan — video akan dilanjutkan otomatis</span>
+        </div>
+        <div class="mr-ad-area">
+          <!-- Shield: blokir klik ke iframe iklan selama countdown -->
+          <div class="mr-ad-shield" id="mrShield"></div>
+          <div id="mrAdSlot"></div>
+        </div>
+        <div class="mr-bottom">
+          <button class="mr-skip-btn" id="mrSkipBtn" onclick="closeMidroll(event)">⏭ Lewati</button>
+          <div class="mr-countdown">Lanjut dalam<b id="mrSkipNum">5</b></div>
+          <a href="https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba"
+             target="_blank" class="mr-visit" onclick="this.blur()">Kunjungi →</a>
+        </div>
+      </div>
+
       <div class="thumb-overlay hidden" id="thumbOverlay">
         <div class="thumb-emoji" id="thumbEmoji">🎬</div>
         <div class="thumb-title" id="thumbTitle"></div>
@@ -345,7 +577,6 @@ footer{
         </div>
       </div>
 
-      <!-- Play Overlay awal -->
       <div class="play-overlay" id="playOverlay" onclick="startVideo()">
         <div class="play-circle">
           <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
@@ -403,16 +634,26 @@ footer{
       </div>
     </div>
 
+    <!-- AD MID — sebelum related video -->
+    <div class="ad-mid">
+      <div>
+        <div class="ad-label">Iklan</div>
+        <script>
+          atOptions={'key':'5587dc9d7bd7fe1a092dd063f078236e','format':'iframe','height':250,'width':300,'params':{}};
+        </script>
+        <script src="https://www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
+      </div>
+    </div>
+
     <!-- Related Videos -->
     <div class="section-title">🎬 Video Lainnya — Klik untuk Tonton</div>
     <div class="related-grid" id="relatedGrid"></div>
 
-  </div><!-- /video-section -->
+  </div>
 
   <!-- SIDEBAR -->
   <div class="sidebar">
 
-    <!-- Sidebar Banner 300x250 -->
     <div class="sidebar-ad">
       <div class="ad-label">Iklan</div>
       <script>
@@ -421,7 +662,6 @@ footer{
       <script src="https://www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
     </div>
 
-    <!-- Smartlink Box -->
     <div class="sl-box">
       <h3>🏆 Penawaran Spesial!</h3>
       <p>Dapatkan reward eksklusif hari ini. Terbatas untuk pengguna baru!</p>
@@ -431,7 +671,6 @@ footer{
          target="_blank" class="green">🎬 Tonton Video Premium</a>
     </div>
 
-    <!-- Sidebar Banner 300x250 ke-2 -->
     <div class="sidebar-ad">
       <div class="ad-label">Iklan</div>
       <script>
@@ -440,12 +679,11 @@ footer{
       <script src="https://www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
     </div>
 
-    <!-- Sidebar Video List -->
     <div class="sidebar-list-title">🔥 Trending Sekarang</div>
     <div id="sidebarList"></div>
 
-  </div><!-- /sidebar -->
-</div><!-- /main -->
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -458,63 +696,70 @@ footer{
 <div class="toast" id="toast"></div>
 
 <script>
-/* ============================================
-   DATA VIDEO — tambah src video asli di sini!
-   Kalau src kosong ('') → klik buka smartlink
-   Kalau src diisi → video langsung diputar
-============================================ */
+/* ============================================================
+   KONSTANTA GLOBAL
+============================================================ */
+const SMARTLINK = 'https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba';
+
+/* ============================================================
+   POPUP INTERSTITIAL — countdown 5 detik
+============================================================ */
+(function(){
+  let n = 5;
+  const fab  = document.getElementById('popupCloseFab');
+  const num  = document.getElementById('popupNum');
+  const info = document.getElementById('popupInfo');
+  const arc  = document.getElementById('popupArc');
+  const circ = 2 * Math.PI * 19; // ~119.4
+
+  const t = setInterval(function(){
+    n--;
+    // Update arc progress
+    const pct = (5 - n) / 5;
+    if(arc) arc.setAttribute('stroke-dasharray', (pct * circ).toFixed(1) + ' ' + circ);
+
+    if(n <= 0){
+      clearInterval(t);
+      if(num) num.textContent = '✓';
+      if(info) info.innerHTML = '<span style="color:#60a5fa;font-weight:700">Klik ✕ untuk tutup</span>';
+      fab.classList.add('ready');
+      if(arc) arc.setAttribute('stroke', '#3b82f6');
+    } else {
+      if(num) num.textContent = n;
+    }
+  }, 1000);
+})();
+
+function closePopup(e){
+  if(e){ e.preventDefault(); e.stopPropagation(); }
+  const fab = document.getElementById('popupCloseFab');
+  if(!fab.classList.contains('ready')) return;
+  // Selalu buka iklan dulu, baru tutup popup
+  window.open(SMARTLINK, '_blank');
+  document.getElementById('popupOverlay').classList.add('hidden');
+}
+
+/* ============================================================
+   DATA VIDEO
+============================================================ */
 const videos = [
-  {
-    emoji:'🎬', title:'Viral omek',
-    dur:'12:34', views:'45K', quality:'HD',
-    src:'https://cdn2.videy.co/83eHW7VY1.mp4' // ← isi dengan URL video mp4 kamu
-  },
-  {
-    emoji:'🎵', title:'viral',
-    dur:'45:20', views:'128K', quality:'HD',
-    src:'https://cdn2.videy.co/IEPIoJ7H1.mp4'
-  },
-  {
-    emoji:'🍳', title:'virall 1',
-    dur:'08:15', views:'23K', quality:'HD',
-    src:'https://cdn2.videy.co/yrY2QxqP1.mp4'
-  },
-  {
-    emoji:'💪', title:'viral 2026',
-    dur:'10:00', views:'67K', quality:'HD',
-    src:'https://cdn2.videy.co/TBYaIIhy2.mp4'
-  },
-  {
-    emoji:'📱', title:'viralTerbaru 2026',
-    dur:'18:45', views:'89K', quality:'4K',
-    src:'https://cdn2.videy.co/9ILaoDAd1.mp4'
-  },
-  {
-    emoji:'🌍', title:'Wisata Indonesia — Destinasi Tersembunyi',
-    dur:'22:10', views:'34K', quality:'HD',
-    src:'https://cdn2.videy.co/OcecWPem1.mp4'
-  },
-  {
-    emoji:'💼', title:'gokil gak nyangka viral',
-    dur:'15:30', views:'56K', quality:'HD',
-    src:'https://cdn2.videy.co/J4g20h9P1.mp4'
-  },
-  {
-    emoji:'🎮', title:'update 2026',
-    dur:'30:00', views:'200K', quality:'4K',
-    src:'https://cdn2.videy.co/zYNf8thb1.mp4'
-  },
+  {emoji:'🎬', title:'Viral omek', dur:'12:34', views:'45K', quality:'HD', src:'https://cdn2.videy.co/83eHW7VY1.mp4'},
+  {emoji:'🎵', title:'viral', dur:'45:20', views:'128K', quality:'HD', src:'https://cdn2.videy.co/IEPIoJ7H1.mp4'},
+  {emoji:'🍳', title:'virall 1', dur:'08:15', views:'23K', quality:'HD', src:'https://cdn2.videy.co/yrY2QxqP1.mp4'},
+  {emoji:'💪', title:'viral 2026', dur:'10:00', views:'67K', quality:'HD', src:'https://cdn2.videy.co/TBYaIIhy2.mp4'},
+  {emoji:'📱', title:'viralTerbaru 2026', dur:'18:45', views:'89K', quality:'4K', src:'https://cdn2.videy.co/9ILaoDAd1.mp4'},
+  {emoji:'🌍', title:'Wisata Indonesia — Destinasi Tersembunyi', dur:'22:10', views:'34K', quality:'HD', src:'https://cdn2.videy.co/OcecWPem1.mp4'},
+  {emoji:'💼', title:'gokil gak nyangka viral', dur:'15:30', views:'56K', quality:'HD', src:'https://cdn2.videy.co/J4g20h9P1.mp4'},
+  {emoji:'🎮', title:'update 2026', dur:'30:00', views:'200K', quality:'4K', src:'https://cdn2.videy.co/zYNf8thb1.mp4'},
 ];
 
 const sidebar = [
   {emoji:'🔥', title:'Video Paling Ditonton Minggu Ini', dur:'05:22', views:'340K', src:''},
   {emoji:'⚡', title:'Berita Terbaru Hari Ini', dur:'03:11', views:'180K', src:''},
-  {emoji:'🎯', title:'bdsm', dur:'20:00', views:'92K', src:''},
-  {emoji:'💡', title:'omek', dur:'07:45', views:'44K', src:''},
-  {emoji:'🌟', title:'dogy', dur:'11:20', views:'73K', src:''},
+  {emoji:'🎯', title:'Video Trending #1', dur:'20:00', views:'92K', src:''},
+  {emoji:'💡', title:'Tips & Trik Viral', dur:'07:45', views:'44K', src:''},
+  {emoji:'🌟', title:'Konten Pilihan Editor', dur:'11:20', views:'73K', src:''},
 ];
-
-const SMARTLINK = 'https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba';
 
 let activeRelIdx = -1;
 let activeSideIdx = -1;
@@ -561,95 +806,67 @@ function renderSidebar(){
 /* ---- Klik Related Video ---- */
 function clickRelated(i){
   const v = videos[i];
-
-  // Reset highlight lama
   if(activeRelIdx >= 0){
     document.getElementById(`rel-${activeRelIdx}`).classList.remove('active');
     document.getElementById(`rel-playing-${activeRelIdx}`).style.display='none';
   }
-  if(activeSideIdx >= 0){
-    document.getElementById(`sv-${activeSideIdx}`).classList.remove('active');
-  }
-
-  activeRelIdx = i;
-  activeSideIdx = -1;
-
-  // Highlight kartu aktif
+  if(activeSideIdx >= 0) document.getElementById(`sv-${activeSideIdx}`).classList.remove('active');
+  activeRelIdx = i; activeSideIdx = -1;
   document.getElementById(`rel-${i}`).classList.add('active');
   document.getElementById(`rel-playing-${i}`).style.display='block';
-
-  // Update info
   document.getElementById('videoTitle').textContent = '🎬 ' + v.title;
   document.getElementById('viewCount').textContent = v.views;
   document.getElementById('qualityBadge').textContent = '⚡ ' + v.quality;
-
-  // Scroll ke player
   document.querySelector('.player-wrap').scrollIntoView({behavior:'smooth',block:'start'});
-
   if(v.src && v.src !== ''){
-    // Ada src video — putar langsung
     loadAndPlay(v.src, v.emoji, v.title);
   } else {
-    // Tidak ada src — tampilkan thumbnail + buka smartlink
     showThumb(v.emoji, v.title);
     window.open(SMARTLINK, '_blank');
   }
-
   showToast('▶ ' + v.title);
 }
 
 /* ---- Klik Sidebar Video ---- */
 function clickSidebar(i){
   const v = sidebar[i];
-
-  // Reset highlight lama
-  if(activeSideIdx >= 0){
-    document.getElementById(`sv-${activeSideIdx}`).classList.remove('active');
-  }
+  if(activeSideIdx >= 0) document.getElementById(`sv-${activeSideIdx}`).classList.remove('active');
   if(activeRelIdx >= 0){
     document.getElementById(`rel-${activeRelIdx}`).classList.remove('active');
     document.getElementById(`rel-playing-${activeRelIdx}`).style.display='none';
   }
-
-  activeSideIdx = i;
-  activeRelIdx = -1;
-
+  activeSideIdx = i; activeRelIdx = -1;
   document.getElementById(`sv-${i}`).classList.add('active');
-
-  // Update info
   document.getElementById('videoTitle').textContent = '🎬 ' + v.title;
   document.getElementById('viewCount').textContent = v.views;
-
   document.querySelector('.player-wrap').scrollIntoView({behavior:'smooth',block:'start'});
-
   if(v.src && v.src !== ''){
     loadAndPlay(v.src, v.emoji, v.title);
   } else {
     showThumb(v.emoji, v.title);
     window.open(SMARTLINK, '_blank');
   }
-
   showToast('▶ ' + v.title);
 }
 
 /* ---- Load & Play Video ---- */
 function loadAndPlay(src, emoji, title){
   const vid = document.getElementById('mainVideo');
+  midrollShown = false; // reset mid-roll untuk video baru
+  document.getElementById('midrollOverlay').classList.add('hidden');
+  clearInterval(mrTimer);
   document.getElementById('videoSrc').setAttribute('src', src);
   vid.load();
-
   document.getElementById('thumbOverlay').classList.add('hidden');
   document.getElementById('playOverlay').classList.add('hidden');
   vid.play().then(()=>{
     isPlaying=true;
     document.getElementById('playPauseBtn').textContent='⏸ Pause';
   }).catch(()=>{
-    // Autoplay diblokir browser → tampilkan overlay play
     document.getElementById('playOverlay').classList.remove('hidden');
   });
 }
 
-/* ---- Tampilkan Thumbnail ---- */
 function showThumb(emoji, title){
   document.getElementById('thumbEmoji').textContent = emoji;
   document.getElementById('thumbTitle').textContent = title;
@@ -663,7 +880,6 @@ function playFromThumb(){
   vid.play().then(()=>{isPlaying=true;document.getElementById('playPauseBtn').textContent='⏸ Pause';});
 }
 
-/* ---- Play overlay awal ---- */
 function startVideo(){
   document.getElementById('playOverlay').classList.add('hidden');
   document.getElementById('mainVideo').play().then(()=>{
@@ -672,15 +888,11 @@ function startVideo(){
   });
 }
 
-/* ---- Toggle Play/Pause ---- */
 function togglePlay(){
   const vid = document.getElementById('mainVideo');
   const btn = document.getElementById('playPauseBtn');
-  if(vid.paused){
-    vid.play();isPlaying=true;btn.textContent='⏸ Pause';
-  } else {
-    vid.pause();isPlaying=false;btn.textContent='▶ Play';
-  }
+  if(vid.paused){vid.play();isPlaying=true;btn.textContent='⏸ Pause';}
+  else{vid.pause();isPlaying=false;btn.textContent='▶ Play';}
 }
 
 /* ---- Progress Bar ---- */
@@ -690,12 +902,74 @@ function fmt(t){
   const m=Math.floor(t/60),s=Math.floor(t%60).toString().padStart(2,'0');
   return `${m}:${s}`;
 }
-vid.addEventListener('loadedmetadata',()=>{
-  document.getElementById('totalDur').textContent=fmt(vid.duration);
-});
+vid.addEventListener('loadedmetadata',()=>{ document.getElementById('totalDur').textContent=fmt(vid.duration); });
+/* ---- MID-ROLL LOGIC ---- */
+let midrollShown = false;
+let mrTimer = null;
+
+function showMidroll(){
+  if(midrollShown) return;
+  midrollShown = true;
+  vid.pause();
+
+  const overlay = document.getElementById('midrollOverlay');
+  overlay.classList.remove('hidden');
+
+  // Inject Adsterra banner ke dalam slot mid-roll
+  const slot = document.getElementById('mrAdSlot');
+  slot.innerHTML = '';
+  const s1 = document.createElement('script');
+  s1.text = "atOptions={'key':'5587dc9d7bd7fe1a092dd063f078236e','format':'iframe','height':250,'width':300,'params':{}};";
+  slot.appendChild(s1);
+  const s2 = document.createElement('script');
+  s2.src = 'https://www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js';
+  slot.appendChild(s2);
+
+  // Countdown skip
+  let n = 5;
+  const skipBtn = document.getElementById('mrSkipBtn');
+  const skipNum = document.getElementById('mrSkipNum');
+  const mrShield = document.getElementById('mrShield');
+  skipBtn.classList.remove('ready');
+  skipNum.textContent = n;
+  // Aktifkan shield selama countdown
+  if(mrShield) mrShield.classList.remove('off');
+  clearInterval(mrTimer);
+  mrTimer = setInterval(()=>{
+    n--;
+    skipNum.textContent = Math.max(n, 0);
+    if(n <= 0){
+      clearInterval(mrTimer);
+      skipBtn.classList.add('ready');
+      skipBtn.textContent = '⏭ Lewati Iklan';
+      // Hapus shield — boleh klik iklan sekarang
+      if(mrShield) mrShield.classList.add('off');
+    }
+  }, 1000);
+}
+
+function closeMidroll(e){
+  if(e){ e.preventDefault(); e.stopPropagation(); }
+  const skipBtn = document.getElementById('mrSkipBtn');
+  if(!skipBtn.classList.contains('ready')) return;
+  clearInterval(mrTimer);
+  // Selalu buka iklan dulu, baru lanjut video
+  window.open(SMARTLINK, '_blank');
+  document.getElementById('midrollOverlay').classList.add('hidden');
+  vid.play().then(()=>{
+    document.getElementById('playPauseBtn').textContent='⏸ Pause';
+  });
+}
+
 vid.addEventListener('timeupdate',()=>{
   document.getElementById('currentTime').textContent=fmt(vid.currentTime);
-  if(vid.duration) document.getElementById('progressFill').style.width=(vid.currentTime/vid.duration*100)+'%';
+  if(vid.duration){
+    document.getElementById('progressFill').style.width=(vid.currentTime/vid.duration*100)+'%';
+    // Tampilkan mid-roll saat video sudah 30% berjalan
+    if(!midrollShown && vid.duration > 10 && vid.currentTime >= vid.duration * 0.3){
+      showMidroll();
+    }
+  }
 });
 vid.addEventListener('ended',()=>{
   isPlaying=false;
@@ -711,7 +985,6 @@ function seekVideo(e){
   if(vid.duration) vid.currentTime=pct*vid.duration;
 }
 
-/* ---- Utilitas ---- */
 function copyLink(){
   navigator.clipboard.writeText(window.location.href).then(()=>showToast('✅ Link berhasil disalin!'));
 }
@@ -724,7 +997,6 @@ function showToast(msg){
   clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-/* ---- Init ---- */
 renderRelated();
 renderSidebar();
 </script>
