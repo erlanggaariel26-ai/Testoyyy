@@ -10,103 +10,219 @@
 :root{
   --bg:#0a0a0f;--surface:#111118;--surface2:#1a1a24;
   --border:#222232;--muted:#64748b;--text:#f0f0f0;
-  --accent:#3b82f6;
+  --accent:#3b82f6;--green:#16a34a;
 }
-html,body{width:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif}
+html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif}
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.nav-logo{font-weight:800;font-size:18px;letter-spacing:-.3px}.nav-logo span{color:var(--accent)}
+.main{max-width:1200px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 300px;gap:16px;}
+@media(max-width:768px){.main{grid-template-columns:1fr;}}
+
+/* PLAYER */
+.player-wrap{position:relative;background:#000;border-radius:14px;overflow:hidden;aspect-ratio:16/9;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+video{width:100%;height:100%;display:block;object-fit:contain}
+
+/* OVERLAYS */
 #popupOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:999999;}
 #popupOverlay.hidden{display:none}
-#popupBox{background:#111118;border:1px solid #222232;border-radius:14px;width:min(360px,92vw);position:relative;}
+#popupBox{background:#111118;border:1px solid #222232;border-radius:14px;width:min(360px,92vw);position:relative;animation: pop .3s ease;}
+
 #popupCloseFab{
   position:absolute;top:-20px;right:-20px;width:44px;height:44px;
   background:#0f172a;border-radius:50%;display:flex;align-items:center;
   justify-content:center;cursor:default;font-size:15px;color:#475569;z-index:1000002;
 }
 #popupCloseFab.ready{cursor:pointer;color:#fff;}
-.popup-ad-wrap{width:100%;padding:10px;text-align:center;background:#000;}
-.popup-footer{background:#0f172a;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #222232;}
-.popup-visit-btn{background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;font-size:12px;text-decoration:none;font-weight:700;}
+
+/* MIDROLL */
+#midrollOverlay{position:absolute;inset:0;z-index:20;background:rgba(0,0,0,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+#midrollOverlay.hidden{display:none}
+.mr-skip-btn{background:#1e293b;color:#475569;border:1px solid #334155;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:700;margin-top:10px;cursor:default;}
+.mr-skip-btn.ready{background:var(--accent);color:#fff;cursor:pointer;}
+
+/* LIST VIDEO */
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));gap:12px;margin-top:15px;}
+.rel-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;}
+.rel-card:hover{border-color:var(--accent);}
+.rel-thumb{aspect-ratio:16/9;background:#222;display:flex;align-items:center;justify-content:center;font-size:30px;color:white;}
+.rel-info{padding:8px;}
+.rel-title{font-size:12px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 </style>
 </head>
 <body>
 
 <div id="popupOverlay">
   <div id="popupBox">
-    <div id="popupCloseFab" onclick="handleCloseClick(event)">
+    <div id="popupCloseFab" onclick="handlePopupClose(event)">
       <span id="popupFabInner">✕</span>
       <svg viewBox="0 0 44 44" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
         <circle cx="22" cy="22" r="19" fill="none" stroke="#1e293b" stroke-width="2.5"/>
-        <circle id="popupArc" cx="22" cy="22" r="19" fill="none" stroke="#3b82f6" stroke-width="2.5"
-          stroke-dasharray="0 120" stroke-linecap="round" transform="rotate(-90 22 22)"/>
+        <circle id="popupArc" cx="22" cy="22" r="19" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="0 120" transform="rotate(-90 22 22)"/>
       </svg>
     </div>
-
-    <div class="popup-ad-wrap">
-      <div style="font-size:10px; color:#64748b; margin-bottom:5px;">IKLAN</div>
-      <script type="text/javascript">
-        atOptions = { 'key' : '5587dc9d7bd7fe1a092dd063f078236e', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
-      </script>
-      <script type="text/javascript" src="//www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
-    </div>
-
-    <div class="popup-footer">
-      <div style="flex:1;text-align:center">
-        <span id="popupInfo" style="font-size:12px;color:#64748b">Tunggu <b id="popupNum" style="color:#f0f0f0">5</b>s</span>
+    <div style="padding:20px; text-align:center;">
+      <div style="font-size:10px; color:var(--muted); margin-bottom:10px;">IKLAN</div>
+      <div id="popupAdArea" style="width:300px; height:250px; background:#000; margin:0 auto; display:flex; align-items:center; justify-content:center; border:1px solid #222;">
+          <p style="font-size:12px; color:#444;">Memuat Iklan...</p>
       </div>
-      <a href="https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba" target="_blank" class="popup-visit-btn">Kunjungi →</a>
+      <div id="popupInfo" style="font-size:12px; margin-top:15px; color:var(--muted);">Tunggu <b id="popupNum">5</b> detik</div>
     </div>
+  </div>
+</div>
+
+<nav><div class="nav-logo">Vid<span>Play</span></div></nav>
+
+<div class="main">
+  <div class="video-section">
+    <div class="player-wrap">
+      <video id="mainVideo" controls poster="https://via.placeholder.com/800x450/000?text=Memuat+Video...">
+        <source id="videoSrc" src="https://cdn2.videy.co/GQNleLmh1.mp4" type="video/mp4">
+      </video>
+
+      <div id="midrollOverlay" class="hidden">
+        <div style="color:white; margin-bottom:10px; font-size:14px;">Iklan - Video dilanjutkan setelah ini</div>
+        <div style="width:300px; height:250px; background:#000; border:1px solid #333;"></div>
+        <button id="mrSkipBtn" class="mr-skip-btn" onclick="handleMidrollSkip(event)">Lewati (<span id="mrNum">5</span>)</button>
+      </div>
+    </div>
+
+    <div style="background:var(--surface); padding:16px; border-radius:14px; margin-top:12px; border:1px solid var(--border);">
+      <h1 id="activeTitle" style="font-size:18px;">🎬 Video Pilihan — Tonton Gratis HD</h1>
+      <p style="color:var(--muted); font-size:13px; margin-top:6px;">👁️ <span id="viewCount">12.4K</span> penonton · ⚡ HD Quality</p>
+    </div>
+
+    <h3 style="margin-top:24px;">Video Lainnya</h3>
+    <div class="related-grid" id="playlist"></div>
+  </div>
+
+  <div class="sidebar">
+      <div style="background:linear-gradient(135deg,#0f172a,#1e3a5f); padding:20px; border-radius:12px; text-align:center; border:1px solid var(--accent);">
+          <p style="font-size:14px; font-weight:700; margin-bottom:10px;">🎁 Klaim Reward!</p>
+          <a href="https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba" target="_blank" style="display:block; background:var(--accent); color:white; padding:10px; border-radius:8px; text-decoration:none; font-weight:700; font-size:12px;">KLIK DISINI</a>
+      </div>
   </div>
 </div>
 
 <script>
 const SMARTLINK = 'https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba';
-let clickCount = 0; // Menghitung jumlah klik
-let isReady = false; // Status apakah countdown selesai
 
-// 1. Logika Countdown
-(function(){
+// Daftar video yang masih aktif (Videy.co)
+const videos = [
+  {title: "Viral Terbaru 2026", emoji: "🎬", src: "https://cdn2.videy.co/GQNleLmh1.mp4", views: "124K"},
+  {title: "Trending Sosmed", emoji: "🔥", src: "https://cdn2.videy.co/83eHW7VY1.mp4", views: "85K"},
+  {title: "Video Lucu Banget", emoji: "😂", src: "https://cdn2.videy.co/IEPIoJ7H1.mp4", views: "210K"},
+  {title: "Koleksi Viral 1", emoji: "⚡", src: "https://cdn2.videy.co/yrY2QxqP1.mp4", views: "56K"}
+];
+
+let popupClicks = 0;
+let popupReady = false;
+let midrollClicks = 0;
+let midrollReady = false;
+let midrollShown = false;
+
+const vid = document.getElementById('mainVideo');
+
+// 1. Load Playlist
+function initPlaylist() {
+  const container = document.getElementById('playlist');
+  videos.forEach((v, i) => {
+    container.innerHTML += `
+      <div class="rel-card" onclick="changeVideo(${i})">
+        <div class="rel-thumb">${v.emoji}</div>
+        <div class="rel-info">
+          <div class="rel-title">${v.title}</div>
+          <div style="font-size:10px; color:#64748b; margin-top:4px;">👁️ ${v.views}</div>
+        </div>
+      </div>`;
+  });
+}
+
+function changeVideo(idx) {
+  const v = videos[idx];
+  document.getElementById('videoSrc').src = v.src;
+  document.getElementById('activeTitle').textContent = "🎬 " + v.title;
+  document.getElementById('viewCount').textContent = v.views;
+  vid.load();
+  vid.play();
+  midrollShown = false; // Reset iklan untuk video baru
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// 2. Logika Popup Awal (2 Klik)
+(function startPopup() {
   let n = 5;
-  const fab = document.getElementById('popupCloseFab');
   const num = document.getElementById('popupNum');
-  const info = document.getElementById('popupInfo');
   const arc = document.getElementById('popupArc');
-  const circ = 2 * Math.PI * 19;
-
+  const fab = document.getElementById('popupCloseFab');
+  
   const timer = setInterval(() => {
     n--;
-    let pct = (5 - n) / 5;
-    if(arc) arc.setAttribute('stroke-dasharray', (pct * circ).toFixed(1) + ' ' + circ);
-    
-    if(n <= 0){
+    if(arc) arc.setAttribute('stroke-dasharray', `${((5-n)/5)*120} 120`);
+    if(num) num.textContent = n;
+
+    if(n <= 0) {
       clearInterval(timer);
-      isReady = true;
-      if(num) num.textContent = '✓';
-      if(info) info.innerHTML = '<span style="color:#60a5fa">Klik ✕ untuk tutup</span>';
+      popupReady = true;
       fab.classList.add('ready');
-    } else {
-      if(num) num.textContent = n;
+      document.getElementById('popupInfo').innerHTML = "<span style='color:#3b82f6; font-weight:700;'>Klik ✕ untuk tutup</span>";
     }
   }, 1000);
 })();
 
-// 2. Logika Klik Ganda (Redirect dulu, baru Tutup)
-function handleCloseClick(e) {
-  if (e) { e.preventDefault(); e.stopPropagation(); }
-  
-  // Jika countdown belum selesai, jangan lakukan apa-apa
-  if (!isReady) return;
-
-  clickCount++;
-
-  if (clickCount === 1) {
-    // Klik Pertama: Buka Iklan
+function handlePopupClose(e) {
+  if(!popupReady) return;
+  popupClicks++;
+  if(popupClicks === 1) {
     window.open(SMARTLINK, '_blank');
-    // Beri info ke user
-    document.getElementById('popupInfo').innerHTML = '<span style="color:#ef4444">Sekali lagi untuk tutup</span>';
-  } else if (clickCount >= 2) {
-    // Klik Kedua: Tutup Popup
+    document.getElementById('popupInfo').innerHTML = "<b style='color:#ef4444'>Sekali lagi untuk tutup!</b>";
+  } else {
     document.getElementById('popupOverlay').classList.add('hidden');
   }
 }
+
+// 3. Logika Mid-roll (Muncul di tengah video)
+vid.addEventListener('timeupdate', () => {
+  if(!midrollShown && vid.currentTime > 10) { // Muncul setelah 10 detik
+    showMidroll();
+  }
+});
+
+function showMidroll() {
+  midrollShown = true;
+  vid.pause();
+  document.getElementById('midrollOverlay').classList.remove('hidden');
+  
+  let n = 5;
+  const skipBtn = document.getElementById('mrSkipBtn');
+  const mrNum = document.getElementById('mrNum');
+  
+  const timer = setInterval(() => {
+    n--;
+    if(mrNum) mrNum.textContent = n;
+    if(n <= 0) {
+      clearInterval(timer);
+      midrollReady = true;
+      skipBtn.classList.add('ready');
+      skipBtn.textContent = "Lewati Iklan";
+    }
+  }, 1000);
+}
+
+function handleMidrollSkip(e) {
+  if(!midrollReady) return;
+  midrollClicks++;
+  
+  if(midrollClicks === 1) {
+    window.open(SMARTLINK, '_blank');
+    e.target.textContent = "Konfirmasi Lewati";
+    e.target.style.background = "#16a34a";
+  } else {
+    document.getElementById('midrollOverlay').classList.add('hidden');
+    vid.play();
+  }
+}
+
+window.onload = initPlaylist;
 </script>
 </body>
 </html>
